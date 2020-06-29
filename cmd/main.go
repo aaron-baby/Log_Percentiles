@@ -14,7 +14,6 @@ import (
 func main() {
 	dir := flag.String("dir", ".", "log directory")
 	flag.Parse()
-	fmt.Println("log dir:", *dir)
 	var wg sync.WaitGroup
 
 	files, err := ioutil.ReadDir(*dir)
@@ -30,7 +29,7 @@ func main() {
 		if !matched {
 			continue
 		}
-		fmt.Println("file name", file.Name())
+
 		wg.Add(1)
 
 		l := pkg.NewLogParser(format)
@@ -49,8 +48,7 @@ func main() {
 	// Wait blocks until the WaitGroup counter is zero.
 	wg.Wait()
 	// Compute Quantiles
-	log.Println("50th", td.Quantile(0.5))
-	log.Println("75th", td.Quantile(0.75))
-	log.Println("90th", td.Quantile(0.9))
-	log.Println("99th", td.Quantile(0.99))
+	fmt.Printf("90%% of requests return a response within %.f ms\n", td.Quantile(0.9))
+	fmt.Printf("95%% of requests return a response within %.f ms\n", td.Quantile(0.95))
+	fmt.Printf("99%% of requests return a response within %.f ms\n", td.Quantile(0.99))
 }

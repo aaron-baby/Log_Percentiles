@@ -13,11 +13,12 @@ Each log file contains multiple log lines, and the format for each log line is:
 ## Code structure
 The project can be composed of by three parts
 - parse log fields and add values to sorter
-- sort response time
+- get percentile from added values (use _github.com/influxdata/tdigest_ implementation)
 - print results
 
-## Main Process
-- sort all log files lines
+a parameter can use to custom compression which to control trade-off between the size of t-digest and quantiles accuracy.
+
+    td := tdigest.NewWithCompression(1000)
 
 ## Algorithm
 According to [elastic blog](https://www.elastic.co/blog/averages-can-dangerous-use-percentile "Averages Can Be Misleading: Try a Percentile")
@@ -26,7 +27,12 @@ According to [elastic blog](https://www.elastic.co/blog/averages-can-dangerous-u
 > - For small datasets, your percentiles will be highly accurate (potentially 100% exact if the data is small enough)
 > - For larger datasets, T-Digest will begin to trade accuracy for memory savings so that your node doesn't explode
 > - Extreme percentiles (e.g. 95th) tend to be more accurate than interior percentiles (e.g. 50th)
-      
+
+[T-Digest Paper](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf)
+
+### Time complexity and space complexity
+    If c1 is the input buﬀer size, the dominant costs are the sort and the scale function calls so the amortized cost per input value is roughly C1logc1+ C2⌈δ⌉/c1 where C1 and C2 are parameters representing the sort and scale function costs respectively.
+
 ## Testing
     make test
 
@@ -48,3 +54,20 @@ Testing Result
     go test pkg/file_reader_test.go pkg/file_reader.go
 
 ## User guide
+1- [Prepare go environment](https://golang.org/doc/install)
+
+2- Extract Log_Percentiles-master.zip file
+
+3- Build binary
+
+    make build
+4- Run
+
+    ./bin/main -h
+    Usage of ./bin/main:
+      -dir string
+        	log directory (default ".")
+
+Specify log directory with sample files
+
+    ./bin/main -dir=log
