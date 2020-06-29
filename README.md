@@ -31,7 +31,7 @@ According to [elastic blog](https://www.elastic.co/blog/averages-can-dangerous-u
 [T-Digest Paper](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf)
 
 ### Time complexity and space complexity
-    If c1 is the input buﬀer size, the dominant costs are the sort and the scale function calls so the amortized cost per input value is roughly C1logc1+ C2⌈δ⌉/c1 where C1 and C2 are parameters representing the sort and scale function costs respectively.
+> If c<sub>1</sub> is the input buﬀer size, the dominant costs are the sort and the scale function calls so the amortized cost per input value is roughly C<sub>1</sub>logc<sub>1</sub>+ C<sub>2</sub>⌈δ⌉/c<sub>1</sub> where C<sub>1</sub> and C<sub>2</sub> are parameters representing the sort and scale function costs respectively.
 
 ## Testing
     make test
